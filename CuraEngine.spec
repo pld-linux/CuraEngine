@@ -4,16 +4,24 @@
 
 Summary:	Engine for processing 3D models into G-code instructions for 3D printers
 Name:		CuraEngine
-Version:	15.04
+Version:	2.5.0
 Release:	1
+Epoch:		1
 License:	AGPLv3
 Group:		Applications/Engineering
-Source0:	https://github.com/Ultimaker/CuraEngine/archive/%{version}.tar.gz
-# Source0-md5:	75d34492ca18358aa554a56afb2de440
+Source0:	https://github.com/Ultimaker/CuraEngine/archive/%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	8d8de8f56fd5831b3b74e8946a26681e
+Patch0:		%{name}-rpath.patch
+Patch1:		%{name}-static-libstdcpp.patch
+Patch2:		%{name}-system-libs.patch
 URL:		https://github.com/Ultimaker/CuraEngine
+BuildRequires:	cmake
+BuildRequires:	libArcus-devel = %{version}
 BuildRequires:	libstdc++-devel
 BuildRequires:	polyclipping-devel >= 6.1.2
+BuildRequires:	protobuf-devel
 %{?with_tests:BuildRequires:  python}
+BuildRequires:	rapidjson-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -27,28 +35,33 @@ graphical application look at cura with is the graphical frontend for
 
 %prep
 %setup -q
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
-# bundled clipper
-rm -r clipper
-sed -i 's|#include <clipper/clipper.hpp>|#include <polyclipping/clipper.hpp>|' src/utils/*.h
-sed -i 's|-lclipper|-lpolyclipping|g' Makefile
-sed -i 's| $(BUILD_DIR)/libclipper.a||g' Makefile
+# bundled libraries
+rm -rf libs
+sed -i 's|#include <clipper/clipper.hpp>|#include <polyclipping/clipper.hpp>|' src/utils/*.h src/*.cpp
 
-# allow redefinition of CFLAGS and do not build it static
-sed -i 's|CFLAGS +=|CFLAGS?=|' Makefile
-sed -i 's|--static||g' Makefile
+# The -DCURA_ENGINE_VERSION does not work, so we sed-change the default value
+sed -i 's/"DEV"/"%{version}"/' src/settings/settings.h
 
 %build
-CXX="%{__cxx}" \
-CFLAGS="-I. -Ilibs -c %{rpmcflags} %{rpmcppflags} -std=c++11 -fomit-frame-pointer" \
-	%{__make}
+mkdir build
+cd build
+%{cmake} .. \
+	-DBUILD_SHARED_LIBS:BOOL=OFF \
+	-DCURA_ENGINE_VERSION:STRING=%{version}
+
+%{__make}
 
 %{?with_tests:%{__make} test}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_bindir}/%{name}
-install -p build/%{name} $RPM_BUILD_ROOT%{_bindir}
+
+%{__make} -C build install \
+	DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT

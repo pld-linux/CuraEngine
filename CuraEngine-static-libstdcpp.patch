@@ -1,0 +1,27 @@
+From d79be0eb0e0e27e70b709b043b4085cda007beed Mon Sep 17 00:00:00 2001
+From: rpm-build <rpm-build>
+Date: Wed, 3 May 2017 14:02:04 +0200
+Subject: [PATCH 2/3] Don't use -static-libstdc++
+
+---
+ CMakeLists.txt | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 1ec537d..bc5cf85 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -36,10 +36,6 @@ endif()
+ # Add warnings
+ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+ 
+-if(NOT APPLE AND NOT WIN32)
+-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libstdc++")
+-endif()
+-
+ option (ENABLE_OPENMP
+     "Use OpenMP for parallel code" ON)
+ 
+-- 
+2.11.0
+
