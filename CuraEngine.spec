@@ -5,7 +5,7 @@
 Summary:	Engine for processing 3D models into G-code instructions for 3D printers
 Name:		CuraEngine
 Version:	2.5.0
-Release:	1
+Release:	2
 Epoch:		1
 License:	AGPLv3
 Group:		Applications/Engineering
