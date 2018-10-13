@@ -3,11 +3,12 @@
 %bcond_with	tests		# build with tests
 
 Summary:	Engine for processing 3D models into G-code instructions for 3D printers
+Summary(pl.UTF-8):	Silnik do przetwarzania modeli 3D na instrukcje G-code dla drukarek 3D
 Name:		CuraEngine
 Version:	2.5.0
-Release:	2
+Release:	3
 Epoch:		1
-License:	AGPLv3
+License:	AGPL v3
 Group:		Applications/Engineering
 Source0:	https://github.com/Ultimaker/CuraEngine/archive/%{version}/%{name}-%{version}.tar.gz
 # Source0-md5:	8d8de8f56fd5831b3b74e8946a26681e
@@ -25,13 +26,22 @@ BuildRequires:	rapidjson-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-%{name} is a C++ console application for 3D printing G-code
+CuraEngine is a C++ console application for 3D printing G-code
 generation. It has been made as a better and faster alternative to the
 old Skeinforge engine.
 
 This is just a console application for G-code generation. For a full
 graphical application look at cura with is the graphical frontend for
-%{name}.
+CuraEngine.
+
+%description -l pl.UTF-8
+CuraEngine to aplikacja konsolowa C++ do generowania intrukcji G-code
+dla drukarek 3D. Powstała jako lepsza i szybsza alternatywa dla
+starego silnika Skeinforge.
+
+To jest tylko aplikacja konsolowa do generowania kodu. Pełna graficzna
+aplikacja, będąca graficznym interfejsem do CuraEngine, znajduje się w
+pakiecie cura.
 
 %prep
 %setup -q
@@ -41,15 +51,15 @@ graphical application look at cura with is the graphical frontend for
 
 # bundled libraries
 rm -rf libs
-sed -i 's|#include <clipper/clipper.hpp>|#include <polyclipping/clipper.hpp>|' src/utils/*.h src/*.cpp
+%{__sed} -i 's|#include <clipper/clipper.hpp>|#include <polyclipping/clipper.hpp>|' src/utils/*.h src/*.cpp
 
 # The -DCURA_ENGINE_VERSION does not work, so we sed-change the default value
-sed -i 's/"DEV"/"%{version}"/' src/settings/settings.h
+%{__sed} -i 's/"DEV"/"%{version}"/' src/settings/settings.h
 
 %build
 mkdir build
 cd build
-%{cmake} .. \
+%cmake .. \
 	-DBUILD_SHARED_LIBS:BOOL=OFF \
 	-DCURA_ENGINE_VERSION:STRING=%{version}
 
