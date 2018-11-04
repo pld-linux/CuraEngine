@@ -11,15 +11,14 @@ diff --git a/CMakeLists.txt b/CMakeLists.txt
 index c2316d6..1ec537d 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -21,8 +21,6 @@ if(APPLE AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -stdlib=libc++")
+@@ -21,7 +21,6 @@ if(APPLE AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+ if(NOT DEFINED LIB_SUFFIX)
+     set(LIB_SUFFIX "")
  endif()
+-set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}")
  
--set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
--
  set(CURA_ENGINE_VERSION "master" CACHE STRING "Version name of Cura")
  
- option(BUILD_TESTS OFF)
 -- 
 2.11.0
 
