@@ -6,14 +6,17 @@ Summary:	Engine for processing 3D models into G-code instructions for 3D printer
 Summary(pl.UTF-8):	Silnik do przetwarzania modeli 3D na instrukcje G-code dla drukarek 3D
 Name:		CuraEngine
 Version:	3.5.1
-Release:	1
+Release:	2
 Epoch:		1
 License:	AGPL v3
 Group:		Applications/Engineering
 Source0:	https://github.com/Ultimaker/CuraEngine/archive/%{version}/%{name}-%{version}.tar.gz
 # Source0-md5:	54800673b165c69dff2978e7b7a58e70
+Source1:	https://raw.githubusercontent.com/nothings/stb/master/stb_image.h
+# Source1-md5:	2a512ad9f82f104b8120e52babd37cc7
 Patch0:		%{name}-rpath.patch
 Patch1:		%{name}-static-libstdcpp.patch
+Patch2:		local-stb.patch
 URL:		https://github.com/Ultimaker/CuraEngine
 BuildRequires:	cmake
 BuildRequires:	libArcus-devel = %{version}
@@ -46,9 +49,13 @@ pakiecie cura.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
+
+mkdir stb
+install %{SOURCE1} stb/
 
 # bundled libraries
-rm -rf libs
+%{__rm} -rf libs
 %{__sed} -i 's|#include <clipper/clipper.hpp>|#include <polyclipping/clipper.hpp>|' src/utils/*.h src/*.cpp
 
 # The -DCURA_ENGINE_VERSION does not work, so we sed-change the default value
@@ -58,6 +65,7 @@ rm -rf libs
 mkdir build
 cd build
 %cmake .. \
+	-DStb_INCLUDE_DIRS:STRING="$(pwd)/.." \
 	-DUSE_SYSTEM_LIBS:BOOL=ON \
 	-DBUILD_SHARED_LIBS:BOOL=OFF \
 	-DCURA_ENGINE_VERSION:STRING=%{version}
