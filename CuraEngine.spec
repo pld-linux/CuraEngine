@@ -6,7 +6,7 @@ Summary:	Engine for processing 3D models into G-code instructions for 3D printer
 Summary(pl.UTF-8):	Silnik do przetwarzania modeli 3D na instrukcje G-code dla drukarek 3D
 Name:		CuraEngine
 Version:	3.5.1
-Release:	3
+Release:	4
 Epoch:		1
 License:	AGPL v3
 Group:		Applications/Engineering
