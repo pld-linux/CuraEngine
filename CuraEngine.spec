@@ -5,18 +5,17 @@
 Summary:	Engine for processing 3D models into G-code instructions for 3D printers
 Summary(pl.UTF-8):	Silnik do przetwarzania modeli 3D na instrukcje G-code dla drukarek 3D
 Name:		CuraEngine
-Version:	3.5.1
-Release:	6
+Version:	4.5.0
+Release:	1
 Epoch:		1
 License:	AGPL v3
 Group:		Applications/Engineering
 #Source0Download: https://github.com/Ultimaker/CuraEngine/releases
 Source0:	https://github.com/Ultimaker/CuraEngine/archive/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	54800673b165c69dff2978e7b7a58e70
+# Source0-md5:	63df14853c6a183acc1153176423c2a7
 Source1:	https://raw.githubusercontent.com/nothings/stb/master/stb_image.h
-# Source1-md5:	2a512ad9f82f104b8120e52babd37cc7
+# Source1-md5:	a1170ba8b5f36154a8b9859f17ee8470
 Patch0:		%{name}-rpath.patch
-Patch1:		%{name}-static-libstdcpp.patch
 Patch2:		local-stb.patch
 URL:		https://github.com/Ultimaker/CuraEngine
 BuildRequires:	cmake >= 2.8.12
@@ -50,7 +49,6 @@ pakiecie cura.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
 %patch2 -p1
 
 mkdir stb
@@ -61,7 +59,7 @@ cp -p %{SOURCE1} stb/
 %{__sed} -i 's|#include <clipper/clipper.hpp>|#include <polyclipping/clipper.hpp>|' src/utils/*.h src/*.cpp
 
 # The -DCURA_ENGINE_VERSION does not work, so we sed-change the default value
-%{__sed} -i 's/"DEV"/"%{version}"/' src/settings/settings.h
+%{__sed} -i 's/"DEV"/"%{version}"/' src/settings/Settings.h
 
 %build
 mkdir build
