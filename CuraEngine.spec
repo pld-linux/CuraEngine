@@ -6,7 +6,7 @@ Summary:	Engine for processing 3D models into G-code instructions for 3D printer
 Summary(pl.UTF-8):	Silnik do przetwarzania modeli 3D na instrukcje G-code dla drukarek 3D
 Name:		CuraEngine
 Version:	4.5.0
-Release:	2
+Release:	3
 Epoch:		1
 License:	AGPL v3
 Group:		Applications/Engineering
@@ -16,9 +16,10 @@ Source0:	https://github.com/Ultimaker/CuraEngine/archive/%{version}/%{name}-%{ve
 Source1:	https://raw.githubusercontent.com/nothings/stb/master/stb_image.h
 # Source1-md5:	a1170ba8b5f36154a8b9859f17ee8470
 Patch0:		%{name}-rpath.patch
+Patch1:		%{name}-static-libstdcpp.patch
 Patch2:		local-stb.patch
 URL:		https://github.com/Ultimaker/CuraEngine
-BuildRequires:	cmake >= 2.8.12
+BuildRequires:	cmake >= 3.6.0
 BuildRequires:	libArcus-devel = %{version}
 BuildRequires:	libgomp-devel
 BuildRequires:	libstdc++-devel >= 6:4.7
@@ -49,6 +50,7 @@ pakiecie cura.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 %patch2 -p1
 
 mkdir stb
