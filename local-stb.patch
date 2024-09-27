@@ -1,7 +1,7 @@
---- CuraEngine-4.5.0/CMakeLists.txt.orig	2022-07-08 20:39:09.872656739 +0200
-+++ CuraEngine-4.5.0/CMakeLists.txt	2022-07-08 20:40:19.215614409 +0200
-@@ -24,8 +24,6 @@ if(ENABLE_ARCUS)
-     add_definitions(-DARCUS)
+--- CuraEngine-4.13.2/CMakeLists.txt.orig	2024-09-26 21:13:45.678247207 +0200
++++ CuraEngine-4.13.2/CMakeLists.txt	2024-09-26 21:14:33.027990691 +0200
+@@ -28,8 +28,6 @@ if(ENABLE_ARCUS)
+     endif()
  endif()
  
 -#For reading image files.
@@ -9,7 +9,7 @@
  include_directories(${Stb_INCLUDE_DIRS})
  
  option(USE_SYSTEM_LIBS "Use the system libraries if available" OFF)
-@@ -262,9 +260,6 @@ endif ()
+@@ -277,9 +275,6 @@ endif ()
  # Compiling CuraEngine itself.
  add_library(_CuraEngine STATIC ${engine_SRCS} ${engine_PB_SRCS}) #First compile all of CuraEngine as library, allowing this to be re-used for tests.
  
