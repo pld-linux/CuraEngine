@@ -16,6 +16,7 @@ Source0:	https://github.com/Ultimaker/CuraEngine/archive/%{version}/%{name}-%{ve
 # Source0-md5:	85b46d4282dc061345d4efda822fae19
 Source1:	https://raw.githubusercontent.com/nothings/stb/master/stb_image.h
 # Source1-md5:	27932e6fb3a2f26aee2fc33f2cb4e696
+Patch0:		%{name}-includes.patch
 Patch1:		%{name}-static-libstdcpp.patch
 Patch2:		local-stb.patch
 URL:		https://github.com/Ultimaker/CuraEngine
@@ -51,6 +52,7 @@ pakiecie cura.
 
 %prep
 %setup -q
+%patch0 -p1
 %patch1 -p1
 %patch2 -p1
 
