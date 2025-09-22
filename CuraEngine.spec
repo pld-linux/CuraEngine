@@ -7,7 +7,7 @@ Summary(pl.UTF-8):	Silnik do przetwarzania modeli 3D na instrukcje G-code dla dr
 # keep in sync with cura, libArcus, libSavitar, python3-Uranium
 Name:		CuraEngine
 Version:	4.13.2
-Release:	1
+Release:	2
 Epoch:		1
 License:	AGPL v3
 Group:		Applications/Engineering
